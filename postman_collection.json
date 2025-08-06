@@ -1,0 +1,435 @@
+{
+  "info": {
+    "name": "Stock Trading API",
+    "description": "Complete API collection for stock trading application with authentication, user management, stock operations, and transaction logging",
+    "version": "1.0.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{authToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "stockId",
+      "value": "507f1f77bcf86cd799439011",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"password123\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "register"]
+            },
+            "description": "Register a new user with email, password, first name, and last name. Returns user info and JWT token."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('authToken', response.token);",
+                  "    console.log('Token saved:', response.token);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "login"]
+            },
+            "description": "Login with email and password. Returns user info and JWT token."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('authToken', response.token);",
+                  "    console.log('Token saved:', response.token);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "User Management",
+      "item": [
+        {
+          "name": "Get User Info",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/userinfo",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "userinfo"]
+            },
+            "description": "Get current user's information including name, email, and coins balance."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Username",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Smith\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/username",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "username"]
+            },
+            "description": "Update user's first and last name."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Password",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"password123\",\n  \"newPassword\": \"newpassword123\",\n  \"newPasswordConfirmed\": \"newpassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/password",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "password"]
+            },
+            "description": "Update user's password. Requires current password and confirmation of new password."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/removeuser",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "removeuser"]
+            },
+            "description": "Delete user account and all associated data (purchased stocks, transactions, action logs)."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Stocks",
+      "item": [
+        {
+          "name": "Get All Stocks",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/stocks",
+              "host": ["{{baseUrl}}"],
+              "path": ["stocks"]
+            },
+            "description": "Get all available stocks sorted by ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Stock by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/stocks/{{stockId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["stocks", "{{stockId}}"]
+            },
+            "description": "Get specific stock information by stock ID."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Purchased Stocks",
+      "item": [
+        {
+          "name": "Get All Purchased Stocks",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/purchased-stocks",
+              "host": ["{{baseUrl}}"],
+              "path": ["purchased-stocks"]
+            },
+            "description": "Get all stocks purchased by the authenticated user."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Purchased Stock by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/purchased-stocks/{{stockId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["purchased-stocks", "{{stockId}}"]
+            },
+            "description": "Get specific purchased stock by stock ID for the authenticated user."
+          },
+          "response": []
+        },
+        {
+          "name": "Buy Stock",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"stockId\": \"{{stockId}}\",\n  \"sharesBought\": 10\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/purchased-stocks",
+              "host": ["{{baseUrl}}"],
+              "path": ["purchased-stocks"]
+            },
+            "description": "Purchase shares of a stock. Requires stockId and sharesBought (1-100 shares)."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Purchased Stock (Buy/Sell More)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sharesBought\": 5\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/purchased-stocks/{{stockId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["purchased-stocks", "{{stockId}}"]
+            },
+            "description": "Adjust shares for existing purchased stock. Positive values buy more shares, negative values sell shares."
+          },
+          "response": []
+        },
+        {
+          "name": "Sell All Shares",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/purchased-stocks/{{stockId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["purchased-stocks", "{{stockId}}"]
+            },
+            "description": "Sell all shares of a purchased stock."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Transactions",
+      "item": [
+        {
+          "name": "Get All Transactions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/transactions",
+              "host": ["{{baseUrl}}"],
+              "path": ["transactions"]
+            },
+            "description": "Get all transactions for the authenticated user, sorted by transaction date (newest first)."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Action Logs",
+      "item": [
+        {
+          "name": "Get All Action Logs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/action-logs",
+              "host": ["{{baseUrl}}"],
+              "path": ["action-logs"]
+            },
+            "description": "Get all action logs for the authenticated user, sorted by log date (newest first)."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ]
+}
