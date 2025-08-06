@@ -5,8 +5,10 @@ import { GET_ALL_STOCKS, GET_ONE_STOCK, MARKET_ERROR_OCCURRED } from '../constan
 export const getStocks = () => async (dispatch) => {
   try {
     const { data } = await fetchStocks();
+    console.log("✅ fetched stocks data:", data);
     dispatch({ type: GET_ALL_STOCKS, payload: data });
   } catch (error) {
+    console.error("❌ Error fetching stocks:", error);
     if (error.response) {
       dispatch({ type: MARKET_ERROR_OCCURRED, payload: error.response.data.message });
     } else {
