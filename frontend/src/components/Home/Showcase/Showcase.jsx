@@ -8,7 +8,9 @@ import ShowcaseCard from "./ShowcaseCard";
 
 const Showcase = () => {
   const socket = socketIOClient(process.env.REACT_APP_STOCKS_API, { transports: ['websocket', 'polling', 'flashsocket'] });
-  const stocks = useSelector((state) => state.stocksReducer);
+  const stocks = useSelector((state) => state.stocks);
+  console.log("📦 stocks from Redux:", stocks);
+
   const dispatch = useDispatch();
 
   useEffect(() => {

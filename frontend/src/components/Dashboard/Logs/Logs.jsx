@@ -6,7 +6,7 @@ import LogsSkeleton from "./LogsSkeleton";
 
 const Logs = () => {
   const dispatch = useDispatch();
-  const logs = useSelector((state) => state.logsReducer);
+  const logs = useSelector((state) => state.logs);
 
   useEffect(() => {
     dispatch(getLogs());

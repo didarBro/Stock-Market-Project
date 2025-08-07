@@ -9,7 +9,7 @@ import PurchaseOverviewSkeleton from "./PurchaseOverview/PurchaseOverviewSkeleto
 
 const PurchasedStocks = () => {
   const socket = socketIOClient(process.env.REACT_APP_STOCKS_API, { transports: ['websocket', 'polling', 'flashsocket'] });
-  const purchases = useSelector((state) => state.purchasedReducer);
+  const purchases = useSelector((state) => state.purchased);
   const dispatch = useDispatch();
 
   useEffect(() => {

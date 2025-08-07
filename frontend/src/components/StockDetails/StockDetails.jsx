@@ -10,7 +10,7 @@ import PriceChart from "../PriceChart/PriceChart";
 const StockDetails = (props) => {
   const { id } = props;
   const socket = socketIOClient(process.env.REACT_APP_STOCKS_API, { transports: ['websocket', 'polling', 'flashsocket'] });
-  const stock = useSelector((state) => state.stocksReducer);
+  const stock = useSelector((state) => state.stocks);
   const dispatch = useDispatch();
 
   useEffect(() => {

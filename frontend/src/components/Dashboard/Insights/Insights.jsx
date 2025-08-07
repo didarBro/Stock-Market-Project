@@ -6,7 +6,7 @@ import InsightsSkeleton from "./InsightsSkeleton";
 
 const Insights = (props) => {
   const dispatch = useDispatch();
-  const purchases = useSelector((state) => state.purchasedReducer);
+  const purchases = useSelector((state) => state.purchased);
   const { user } = props;
 
   useEffect(() => {

@@ -12,8 +12,8 @@ import PurchasedStockDetailsSkeleton from "./PurchasedStockDetailsSkeleton";
 
 const PurchasedStockDetails = (props) => {
 	const socket = socketIOClient(process.env.REACT_APP_STOCKS_API, { transports: ['websocket', 'polling', 'flashsocket'] });
-	const purchase = useSelector((state) => state.purchasedReducer);
-	const stock = useSelector((state) => state.stocksReducer);
+	const purchase = useSelector((state) => state.purchased);
+	const stock = useSelector((state) => state.stocks);
 	const dispatch = useDispatch();
 	const { id } = useParams();
 	const { state } = useLocation();

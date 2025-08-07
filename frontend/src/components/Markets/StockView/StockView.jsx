@@ -16,7 +16,7 @@ const StockView = () => {
     transports: ["websocket", "polling", "flashsocket"],
   });
   const errors = useSelector((state) => state.marketErrorsReducer);
-  const stocks = useSelector((state) => state.stocksReducer);
+  const stocks = useSelector((state) => state.stocks);
   console.log("🔥 Stocks from Redux:", stocks);
 
   const [isListMode, setIsListMode] = useState(true);
@@ -44,12 +44,13 @@ const StockView = () => {
 
   const filteredStocks = stocks?.length
     ? stocks.filter((stock) => {
-        return (
-          stock.name.toLowerCase().includes(searchFilter.toLowerCase()) ||
-          stock.ticker.toLowerCase().includes(searchFilter.toLowerCase())
-        );
+        const name = stock.name?.toLowerCase() || "";
+        const ticker = stock.ticker?.toLowerCase() || "";
+        const filter = searchFilter.toLowerCase();
+
+        return name.includes(filter) || ticker.includes(filter);
       })
-    : null;
+    : [];
 
   const sortByField = (field, reverse) => {
     dispatch({

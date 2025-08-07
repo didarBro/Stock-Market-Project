@@ -15,8 +15,8 @@ const TransactionForm = () => {
   const { id } = useParams();
   const history = useHistory();
   const dispatch = useDispatch();
-  const stock = useSelector((state) => state.stocksReducer);
-  const purchase = useSelector((state) => state.purchasedReducer);
+  const stock = useSelector((state) => state.stocks);
+  const purchase = useSelector((state) => state.purchased);
   const errors = useSelector((state) => state.purchasedErrorsReducer);
   const [form, setForm] = useState(initialState);
   const [isSell, setIsSell] = useState(false);

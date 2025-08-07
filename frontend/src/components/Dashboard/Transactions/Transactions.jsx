@@ -5,7 +5,7 @@ import TransactionsSkeleton from "./TransactionsSkeleton";
 
 const Transactions = () => {
   const dispatch = useDispatch();
-  const transactions = useSelector((state) => state.transactionsReducer);
+  const transactions = useSelector((state) => state.transactions);
 
   useEffect(() => {
     dispatch(getTransactions());
