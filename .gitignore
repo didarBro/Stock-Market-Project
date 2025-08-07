@@ -20,7 +20,7 @@
 /frontend/yarn-debug.log*
 /frontend/yarn-error.log*
 # environment
-/frontend/.env
+# /frontend/.env
 # production
 /frontend/build
 
@@ -34,7 +34,7 @@
 /backend/.env.test.local
 /backend/.env.production.local
 # environment
-/backend/.env
+# /backend/.env
 
 ## VSCODE ##
 # vscode
